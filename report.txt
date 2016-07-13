@@ -1,0 +1,91 @@
+/*
+Name: Geordie Wicks
+Username: gwicks
+Student ID: 185828
+
+COMP30023 Project 1
+*/
+
+
+
+To test the scheduling algorithms i made
+four different types of input files:
+
+Number 1: Lots of Very small jobs ( time <=5 seconds)
+Number 2: Lots of small jobs ( time < 10 seconds )
+Number 3: Lots of large Jobs ( time > 20 seconds )
+Number 4: Mix of small and Large jobs in random order
+
+
+I then ran each input file once using the FCFS algorithm,
+and then ran each input file three times using the multi
+algorithm, using different Quantum times:
+
+QUANTUM TIMES:
+
+Q1 = 2, 4, 8 - short
+Q2 = 4, 8, 16 - long
+Q3 = 2, 4, 20 - short/long
+
+I recorded the average finish time of jobs, the number of times 
+processes were swapped in and out of main memory, and the total 
+number of process changes.
+
+** NOTE **
+Memory swaps only refer to moving a running process out of memory
+to fit another process in. It does not include loading into memory
+at start of process or moving out of memory when process finishes!
+**
+
+In general, i am assuming that the best results would be:
+* low average finish times
+* minimum memory swaps between RAM and disk
+
+
+T/A = Average turn around time per job
+MS = Memory swaps
+
+Results:	
+	       ||   FCFS  ||                 MULTI LEVEL FEEDBACK	         ||
++-------------------------++-----------------------------------------------------++
+|              ||         ||      Q1        ||        Q2       ||        Q3      ||
++-------------------------++----------------++-----------------++----------------++
+|    File      ||  T/A    ||  T/A  |   MS   ||  T/A   |   MS   ||   T/A  |  MS   || 
++-------------------------++----------------++-----------------++----------------++
++-------------------------++----------------++-----------------++----------------++
+| very small   ||  28     ||  31   |   9    ||   31   |  3     ||   31   |   9   ||
++-------------------------++----------------++-----------------++----------------++
+| small	       ||  56     ||  71   |   22   ||   64   |  9     ||   71   |   22  ||
++-------------------------++----------------++-----------------++----------------++
+| large        ||  417    ||  615  |   108  ||   582  |  60    ||   552  |   60  ||
++-------------------------++----------------++-----------------++----------------++
+| random       ||  179    ||  159  |   37   ||   163  |  26    ||   156  |   25  ||
++-------------------------++----------------++-----------------++----------------++
+
+
+The first interesting to thing to note is that when all the jobs are very similar,
+ie all very small, small or large, FCFS out performes MULTI everytime in turnaround time,
+and it avoids the need to swap jobs in and out of main memory.
+
+For MULTI, when the jobs are short or very short, a long quantum time works the best, probably
+because it behaves quite similarly to FCFS. ie most jobs are finished in the first or second queue
+and it avoids expensive memory swaps.
+For large jobs, short quantum times lead to a large number of swaps (108), with a long turn around time (615).
+Long quantum times improve both turn around and memory swaps significantly, however the best result came
+from short/long quantum times (60 / 552).
+
+Random job times is the only result where MULTI out performed FCFS significantly. For random, long quantum times 
+gave the worst results, whilst short/long gave the best result.
+This makes sense as the short initial quantum time gets most of the short jobs done in the first two
+quantums, whilst the long final quantum means longer jobs get time to complete without needing 
+to be swapped in and out of memory a lot.
+
+CONCLUSION:
+Given these results, for day to day computing, where jobs come in at random times and need random
+amounts of processing time, MULTI with short/long quantums is clearly the best algorithm.
+However if you know you have a lot of jobs to do that all require roughly the same amount of
+processor time, FCFS actually has the lowest turnaround time, and it does it without needing
+to swap processes from disk to memory multiple times.
+
+
+
